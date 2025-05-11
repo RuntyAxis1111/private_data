@@ -114,7 +114,7 @@ function App() {
           <div className="flex justify-between items-center mb-8">
             <button
               onClick={toggleOrder}
-              className="text-sm backdrop-blur px-4 py-1 border border-white/20 rounded-full hover:bg-white/10 transition-colors md:static fixed bottom-6 right-6 z-10"
+              className="text-sm text-white backdrop-blur px-4 py-1 border border-white/20 rounded-full hover:bg-white/10 transition-colors md:static fixed bottom-6 right-6 z-10"
               aria-label="Cambiar orden de fechas"
             >
               {isDesc ? 'Más reciente primero' : 'Más antiguo primero'}
