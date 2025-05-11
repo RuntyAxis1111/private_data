@@ -99,8 +99,7 @@ function App() {
   return (
     <>
       <video
-        src="/public/bg-cipher.mp4"
-        poster="/public/bg-cipher.jpg"
+        src="bg-cipher.mp4"
         autoPlay
         loop
         muted
