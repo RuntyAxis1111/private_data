@@ -104,7 +104,7 @@ function App() {
         loop
         muted
         playsInline
-        className="fixed inset-0 w-full h-full object-cover opacity-80 pointer-events-none"
+        className="fixed inset-0 w-full h-full object-cover opacity-100 pointer-events-none"
       />
       <div className="fixed inset-0 bg-black/5 pointer-events-none" />
       <div className="relative min-h-screen flex flex-col font-inter">
