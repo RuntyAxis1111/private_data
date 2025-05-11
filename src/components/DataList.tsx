@@ -1,9 +1,9 @@
 import React from 'react';
 import DataCard from './DataCard';
-import { Report } from '../types';
+import type { DataRow } from '../types/supabase';
 
 interface DataListProps {
-  reports: Report[];
+  reports: DataRow[];
 }
 
 const DataList: React.FC<DataListProps> = ({ reports }) => {

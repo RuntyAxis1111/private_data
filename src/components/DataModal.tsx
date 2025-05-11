@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Report } from '../types';
 import { X } from 'lucide-react';
 
 interface DataModalProps {
   onClose: () => void;
-  onSave: (report: Omit<Report, 'id' | 'dateAdded'>) => void;
+  onSave: (report: { title: string; addedBy: string; details: string; reportLink: string }) => void;
 }
 
 const DataModal: React.FC<DataModalProps> = ({ onClose, onSave }) => {
