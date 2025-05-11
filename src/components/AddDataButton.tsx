@@ -8,7 +8,7 @@ const AddDataButton: React.FC<AddDataButtonProps> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="bg-yellow-400 text-black font-bold py-2 px-6 hover:bg-yellow-300 transition-colors duration-200 transform hover:scale-105"
+      className="bg-[#FFD700] text-black font-medium py-2 px-6 hover:opacity-85 transition-all duration-200"
     >
       ADD DATA
     </button>

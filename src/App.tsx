@@ -6,24 +6,26 @@ import AddDataButton from './components/AddDataButton';
 import DataModal from './components/DataModal';
 import { supabase } from './lib/supabase';
 import type { DataRow } from './types/supabase';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reports, setReports] = useState<DataRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDesc, setIsDesc] = useState(true);
 
-  const fetchReports = async () => {
+  const fetchReports = async (descending: boolean) => {
     try {
       const { data, error } = await supabase
         .from('Data_HBL_All')
         .select('*')
-        .order('created_at', { ascending: true });
+        .order('created_at', { ascending: !descending });
 
       if (error) throw error;
 
       setReports(data || []);
 
-      // If no data exists, create initial seed
       if (!data || data.length === 0) {
         const seedData = {
           Tittle: 'Cómo usar la plataforma',
@@ -38,11 +40,10 @@ function App() {
 
         if (seedError) throw seedError;
 
-        // Fetch again to get the seeded data
         const { data: updatedData } = await supabase
           .from('Data_HBL_All')
           .select('*')
-          .order('created_at', { ascending: true });
+          .order('created_at', { ascending: !descending });
 
         setReports(updatedData || []);
       }
@@ -55,16 +56,13 @@ function App() {
   };
 
   useEffect(() => {
-    fetchReports();
-  }, []);
+    fetchReports(isDesc);
+  }, [isDesc]);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+  const toggleOrder = () => setIsDesc(!isDesc);
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   const handleAddReport = async (report: { title: string; addedBy: string; details: string; reportLink: string }) => {
     try {
@@ -82,7 +80,7 @@ function App() {
       if (error) throw error;
 
       toast.success('Report added successfully');
-      await fetchReports();
+      await fetchReports(isDesc);
       handleCloseModal();
     } catch (error) {
       toast.error('Error adding report');
@@ -99,23 +97,41 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
-      <Toaster position="top-right" />
-      <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div className="w-full md:w-auto"></div>
-          <AddDataButton onClick={handleOpenModal} />
+    <>
+      <video
+        src="/public/bg-cipher.mp4"
+        poster="/public/bg-cipher.jpg"
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="fixed inset-0 w-full h-full object-cover opacity-40 blur-sm pointer-events-none"
+      />
+      <div className="fixed inset-0 bg-black/70" />
+      <div className="relative min-h-screen flex flex-col font-inter">
+        <Toaster position="top-right" />
+        <Header />
+        <div className="container mx-auto max-w-[1280px] px-6 py-8">
+          <div className="flex justify-between items-center mb-8">
+            <button
+              onClick={toggleOrder}
+              className="text-sm backdrop-blur px-4 py-1 border border-white/20 rounded-full hover:bg-white/10 transition-colors md:static fixed bottom-6 right-6 z-10"
+              aria-label="Cambiar orden de fechas"
+            >
+              {isDesc ? 'Más reciente primero' : 'Más antiguo primero'}
+            </button>
+            <AddDataButton onClick={handleOpenModal} />
+          </div>
+          <DataList reports={reports} />
         </div>
-        <DataList reports={reports} />
+        {isModalOpen && (
+          <DataModal 
+            onClose={handleCloseModal} 
+            onSave={handleAddReport}
+          />
+        )}
       </div>
-      {isModalOpen && (
-        <DataModal 
-          onClose={handleCloseModal} 
-          onSave={handleAddReport}
-        />
-      )}
-    </div>
+    </>
   );
 }
 

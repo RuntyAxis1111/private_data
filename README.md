@@ -32,3 +32,5 @@ The application will be available at `http://localhost:5173` (or the next availa
 - Data is persisted in Supabase
 - Responsive design
 - Error handling with toast notifications
+- Date display for each entry
+- Chronological sorting (newest/oldest first)
