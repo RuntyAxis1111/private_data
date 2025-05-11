@@ -106,7 +106,7 @@ function App() {
         playsInline
         className="fixed inset-0 w-full h-full object-cover opacity-40 blur-sm pointer-events-none"
       />
-      <div className="fixed inset-0 bg-black/70" />
+      <div className="fixed inset-0 bg-transparent backdrop-blur-sm" />
       <div className="relative min-h-screen flex flex-col font-inter">
         <Toaster position="top-right" />
         <Header />
