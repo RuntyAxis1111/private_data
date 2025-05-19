@@ -14,6 +14,7 @@ function App() {
   const [reports, setReports] = useState<DataRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDesc, setIsDesc] = useState(true);
+  const [viewMode, setViewMode] = useState<'card' | 'table'>('card'); // 'card' or 'table'
 
   const fetchReports = async (descending: boolean) => {
     try {
@@ -60,6 +61,7 @@ function App() {
   }, [isDesc]);
 
   const toggleOrder = () => setIsDesc(!isDesc);
+  const toggleViewMode = () => setViewMode(prevMode => prevMode === 'card' ? 'table' : 'card');
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -112,20 +114,29 @@ function App() {
         <Header />
         <div className="container mx-auto max-w-[1280px] px-6 py-8">
           <div className="flex justify-between items-center mb-8">
-            <button
-              onClick={toggleOrder}
-              className="text-sm text-white backdrop-blur px-4 py-1 border border-white/20 rounded-full hover:bg-white/10 transition-colors md:static fixed bottom-6 right-6 z-10"
-              aria-label="Cambiar orden de fechas"
-            >
-              {isDesc ? 'Más reciente primero' : 'Más antiguo primero'}
-            </button>
+            <div className="flex gap-4"> {/* Container for buttons */}
+              <button
+                onClick={toggleOrder}
+                className="text-sm text-white backdrop-blur px-4 py-1 border border-white/20 rounded-full hover:bg-white/10 transition-colors md:static fixed bottom-6 right-6 z-10 md:bottom-auto md:right-auto"
+                aria-label="Cambiar orden de fechas"
+              >
+                {isDesc ? 'Más reciente primero' : 'Más antiguo primero'}
+              </button>
+              <button
+                onClick={toggleViewMode}
+                className="text-sm text-white backdrop-blur px-4 py-1 border border-white/20 rounded-full hover:bg-white/10 transition-colors md:static fixed bottom-6 left-6 z-10 md:bottom-auto md:left-auto"
+                aria-label="Cambiar vista"
+              >
+                {viewMode === 'card' ? 'Ver como tabla' : 'Ver como tarjetas'}
+              </button>
+            </div>
             <AddDataButton onClick={handleOpenModal} />
           </div>
-          <DataList reports={reports} />
+          <DataList reports={reports} viewMode={viewMode} />
         </div>
         {isModalOpen && (
-          <DataModal 
-            onClose={handleCloseModal} 
+          <DataModal
+            onClose={handleCloseModal}
             onSave={handleAddReport}
           />
         )}
